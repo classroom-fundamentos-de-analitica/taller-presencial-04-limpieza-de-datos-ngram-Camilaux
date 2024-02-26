@@ -1,11 +1,11 @@
 """Taller evaluable presencial"""
-
+import nltk
 import pandas as pd
 
 
 def load_data(input_file):
     """Lea el archivo usando pandas y devuelva un DataFrame"""
-    df = pd.read_csv(input_file,sep="\t")
+    df = pd.read_csv(input_file)
     return df
 
 
@@ -37,6 +37,9 @@ def create_key(df, n):
     # 6. Convierta el texto a una lista de tokens
     #df["key"] = df["key"].str.strap().str.lower().str.replace("-","").str.replace(".","").str.split()
     df["key"] = df["key"].str.split()
+
+    # 7. Transforme cada palabra con un stemmer de Porter
+    df["key"] = df["key"].apply(lambda x: [nltk.PorterStemmer().stem(w) for w in x])
 
     df["key"] = df["key"].str.join("")
 
